@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Online Code Editor</title>
+        <link rel="stylesheet" href="./playground.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/316871/termynal.min.js"></script>
+    </head>
+    <body>
+        <div class="header">Wats Online Playground</div>
+        <div class="controls">
+            <button id="run-btn">Run Code</button>
+        </div>
+        <div id="termcontainer" class="container">
+            <div id="editor" class="editor"></div>
+            <div
+                class="output"
+                id="termynal"
+                data-termynal
+                data-ty-typeDelay="40"
+                data-ty-lineDelay="700"
+                data-ty="output"
+                data-ty-cursor="|"
+                style="white-space: pre"
+            ></div>
+        </div>
+
+        <script src="playground.js"></script>
+        <script src="../wasm/app.js"></script>
+    </body>
+</html>
