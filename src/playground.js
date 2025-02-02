@@ -9,10 +9,13 @@ termContainer = document.getElementById("termcontainer");
 
 function ansiToHtml(text) {
   return text
+    .replace(/</g, "&lt;") // Replace < with &lt;
+    .replace(/>/g, "&gt;") // Replace > with &gt;
     .replace(/\x1b\[0;31m/g, '<span style="color: red;">') // Red for errors
-    .replace(/\x1b\[0;32m/g, '<span style="color: green;">') // Add line break before Green
+    .replace(/\x1b\[0;32m/g, '<span style="color: green;">') // Green
     .replace(/\x1b\[0;34m/g, '<span style="color: blue;">') // Blue for hints
-    .replace(/\x1b\[0m/g, '</span><span style="color: white;">');
+    .replace(/\x1b\[0m/g, "</span>") // Reset to default (close the span)
+    .replace(/\x1b\n/g, "<br>"); // Handle newlines
 }
 
 let term = document.getElementById("termynal");
