@@ -19,12 +19,13 @@ function ansiToHtml(text) {
 }
 
 let term = document.getElementById("termynal");
+let termynal;
 
-// fixme: doesn't clear
 function clearTerminal() {
   term.innerHTML = "";
   term.innerText = "";
-  new Termynal("#termynal");
+  outputBuffer = "";
+  termynal = new Termynal("#termynal");
 }
 
 function addTerminalLine(text, color = "white") {
@@ -37,7 +38,7 @@ function addTerminalLine(text, color = "white") {
   console.log(term);
 }
 
-var termynal = new Termynal("#termynal");
+termynal = new Termynal("#termynal");
 
 let outputBuffer = "";
 
@@ -67,8 +68,9 @@ Module = {
 
         Module._compile_program(bufferPointer);
 
+        console.log(outputBuffer);
         addTerminalLine(outputBuffer);
-        new Termynal("#termynal");
+        termynal = new Termynal("#termynal");
 
         Module._free(bufferPointer);
       });
