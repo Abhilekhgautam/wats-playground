@@ -29,6 +29,8 @@ body {
     padding: 10px;
     border-right: 1px solid #ddd;
     background: #282c34;
+    font-size: 14px;
+    height: 100%;
     color: white;
 }
 .output {
