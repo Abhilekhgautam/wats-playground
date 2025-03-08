@@ -4844,11 +4844,11 @@ var __emscripten_stack_alloc = a0 => (__emscripten_stack_alloc = wasmExports["_e
 
 var _emscripten_stack_get_current = () => (_emscripten_stack_get_current = wasmExports["emscripten_stack_get_current"])();
 
+var ___cxa_free_exception = createExportWrapper("__cxa_free_exception", 1);
+
 var ___cxa_decrement_exception_refcount = createExportWrapper("__cxa_decrement_exception_refcount", 1);
 
 var ___cxa_increment_exception_refcount = createExportWrapper("__cxa_increment_exception_refcount", 1);
-
-var ___cxa_free_exception = createExportWrapper("__cxa_free_exception", 1);
 
 var ___cxa_demangle = createExportWrapper("__cxa_demangle", 4);
 
