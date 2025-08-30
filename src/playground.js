@@ -62,7 +62,7 @@ function addLinesToTerminal(text) {
     termContainer.appendChild(lineElement);
   } catch (e) {
     const lineElement = document.createElement("span");
-    lineElement.innerHTML = text;
+    lineElement.innerHTML = ansiToHtml(text);
     termContainer.appendChild(lineElement);
   }
 }
