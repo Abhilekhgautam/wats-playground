@@ -51,21 +51,16 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
-  // Split the output by lines and create new Termynal lines for each
-  const lines = text.trim().split("\n");
-  lines.forEach((line) => {
-    const lineElement = document.createElement("span");
-    lineElement.setAttribute("data-ty", "");
-    lineElement.innerHTML = ansiToHtml(line);
-    termContainer.appendChild(lineElement);
-  });
+  const lineElement = document.createElement("span");
+  lineElement.setAttribute("data-ty", "");
+  lineElement.innerHTML = ansiToHtml(line);
+  termContainer.appendChild(lineElement);
 }
 
 // --- 3. WASM MODULE INTERACTION ---
 let outputBuffer = "";
 function captureOutput(text) {
-  outputBuffer = text;
-  termContainer.innerHTML = outputBuffer;
+  outputBuffer = text + "\n";
 }
 
 Module = {
@@ -90,7 +85,7 @@ Module = {
       Module._free(bufferPointer);
 
       // Add the captured output to the terminal
-      captureOutput(outputBuffer);
+      addLinesToTerminal(outputBuffer);
 
       // Re-initialize Termynal to animate the new lines
       termynal = new Termynal(termContainer);
