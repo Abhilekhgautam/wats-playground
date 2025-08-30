@@ -57,7 +57,7 @@ function addLinesToTerminal(text) {
     lineElement.setAttribute("class", "language-json");
     const codeElement = document.createElement("code");
     codeElement.innerHTML = code;
-    code = Prism.highlightElement(lineElement);
+    code = Prism.highlightElement(codeElement);
     lineElement.appendChild(codeElement);
     termContainer.appendChild(lineElement);
   } catch (e) {
