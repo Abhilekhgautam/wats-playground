@@ -22,7 +22,6 @@ let termynal = new Termynal(termContainer);
 
 // This function converts ANSI color codes from your WASM output to HTML spans
 function ansiToHtml(text) {
-  // A more robust regex to handle various color codes
   const ansiRegex = /\x1b\[(\d+;?)*m/g;
   const colorMap = {
     "0;31": "red",
@@ -34,8 +33,6 @@ function ansiToHtml(text) {
 
   let html = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  // This part is complex, let's keep your simpler version if it works
-  // For now, sticking to your implementation for compatibility:
   return text
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -53,7 +50,7 @@ function clearTerminal() {
 function addLinesToTerminal(text) {
   const lineElement = document.createElement("span");
   lineElement.setAttribute("data-ty", "");
-  lineElement.innerHTML = ansiToHtml(line);
+  lineElement.innerHTML = ansiToHtml(text);
   termContainer.appendChild(lineElement);
 }
 
