@@ -1,5 +1,5 @@
 # Online Wats Playground
-This is an online playground for [The Wats Programming Language](https://github.com/Abhilekhgautam/wats).
+This is an online playground for [The Wats Programming Language](https://abhilekhgautam.github.io/Watssite/).
 
 The compiler is written in C++, which is later compiled to wasm and loaded on the web. This language aims to improve error reporting in compilers, so look out for error messages while running your code.
 
