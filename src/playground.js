@@ -48,9 +48,10 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
-  const lineElement = document.createElement("span");
+  const lineElement = document.createElement("pre");
   lineElement.setAttribute("data-ty", "");
-  lineElement.innerHTML = ansiToHtml(text);
+  let json_val = JSON.parse(text);
+  lineElement.innerHTML = ansiToHtml(JSON.stringify(json_val, null, 4));
   termContainer.appendChild(lineElement);
 }
 
