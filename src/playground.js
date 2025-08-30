@@ -52,6 +52,7 @@ function addLinesToTerminal(text) {
   lineElement.setAttribute("data-ty", "");
   let json_val = JSON.parse(text);
   lineElement.innerHTML = ansiToHtml(JSON.stringify(json_val, null, 4));
+  Prism.highlightElement(lineElement);
   termContainer.appendChild(lineElement);
 }
 
