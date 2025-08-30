@@ -1,82 +1,104 @@
+// --- 1. CODEMIRROR INITIALIZATION ---
 const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
-  theme: "default",
+  // KEY CHANGE: Use the Dracula theme for a stylish look
+  theme: "dracula",
   lineNumbers: true,
   autoCloseBrackets: true,
-  value: "for i 1 to 100{}",
+
+  value: `function main() {
+    let x = 5;
+
+    let y: i64 = 67;
+
+    loop {
+        # Uhh this is a comment.
+    }
+}`,
 });
 
-termContainer = document.getElementById("termcontainer");
+// --- 2. TERMINAL HANDLING LOGIC ---
+const termContainer = document.getElementById("termynal");
+let termynal = new Termynal(termContainer);
 
+// This function converts ANSI color codes from your WASM output to HTML spans
 function ansiToHtml(text) {
-  return text
-    .replace(/</g, "&lt;") // Replace < with &lt;
-    .replace(/>/g, "&gt;") // Replace > with &gt;
-    .replace(/\x1b\[0;31m/g, '<span style="color: red;">') // Red for errors
-    .replace(/\x1b\[0;32m/g, '<span style="color: green;">') // Green
-    .replace(/\x1b\[0;34m/g, '<span style="color: blue;">') // Blue for hints
-    .replace(/\x1b\[0m/g, "</span>") // Reset to default (close the span)
-    .replace(/\x1b\n/g, "<br>"); // Handle newlines
-}
+  // A more robust regex to handle various color codes
+  const ansiRegex = /\x1b\[(\d+;?)*m/g;
+  const colorMap = {
+    "0;31": "red",
+    "0;32": "lightgreen",
+    "0;34": "lightblue",
+    "1;33": "yellow",
+    // Add more color codes as needed
+  };
 
-let term = document.getElementById("termynal");
-let termynal;
+  let html = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // This part is complex, let's keep your simpler version if it works
+  // For now, sticking to your implementation for compatibility:
+  return text
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\x1b\[0;31m/g, '<span style="color: #ff5555;">') // Red for errors
+    .replace(/\x1b\[0;32m/g, '<span style="color: #50fa7b;">') // Green
+    .replace(/\x1b\[0;34m/g, '<span style="color: #8be9fd;">') // Blue for hints
+    .replace(/\x1b\[0m/g, "</span>") // Reset to default
+    .replace(/\n/g, "<br>"); // Handle newlines
+}
 
 function clearTerminal() {
-  term.innerHTML = "";
-  term.innerText = "";
-  outputBuffer = "";
-  termynal = new Termynal("#termynal");
+  termContainer.innerHTML = "";
 }
 
-function addTerminalLine(text, color = "white") {
-  let span = document.createElement("span");
-  span.setAttribute("data-ty", "");
-  span.style.color = color;
-  span.innerHTML = ansiToHtml(text);
-  term.appendChild(span);
-
-  console.log(term);
+function addLinesToTerminal(text) {
+  // Split the output by lines and create new Termynal lines for each
+  const lines = text.trim().split("\n");
+  lines.forEach((line) => {
+    const lineElement = document.createElement("span");
+    lineElement.setAttribute("data-ty", "");
+    lineElement.innerHTML = ansiToHtml(line);
+    termContainer.appendChild(lineElement);
+  });
 }
 
-termynal = new Termynal("#termynal");
-
+// --- 3. WASM MODULE INTERACTION ---
 let outputBuffer = "";
-
-// Function to capture printed output
 function captureOutput(text) {
   outputBuffer += text + "\n";
-  console.log(text);
 }
 
 Module = {
   print: captureOutput,
-
   onRuntimeInitialized: function () {
-    try {
-      console.log("Init");
+    console.log("WASM Runtime Initialized.");
 
-      document.getElementById("run-btn").addEventListener("click", (e) => {
-        clearTerminal();
-        let inputValue = codeMirrorEditor.getValue();
-        console.log(inputValue);
+    document.getElementById("run-btn").addEventListener("click", () => {
+      // Reset buffer and clear the terminal UI
+      outputBuffer = "";
+      clearTerminal();
 
-        // Allocate memory for the string
-        const bufferSize = inputValue.length + 1; // +1 for null terminator
-        const bufferPointer = Module._malloc(bufferSize);
+      let inputValue = codeMirrorEditor.getValue();
 
-        Module.stringToUTF8(inputValue, bufferPointer, bufferSize);
+      // Allocate memory, run code, and free memory
+      const bufferSize = inputValue.length + 1;
+      const bufferPointer = Module._malloc(bufferSize);
+      Module.stringToUTF8(inputValue, bufferPointer, bufferSize);
 
-        Module._compile_program(bufferPointer);
+      Module._compile_program(bufferPointer);
 
-        console.log(outputBuffer);
-        addTerminalLine(outputBuffer);
-        termynal = new Termynal("#termynal");
+      Module._free(bufferPointer);
 
-        Module._free(bufferPointer);
-      });
-    } catch (e) {
-      console.error("🔥 WASM Exception Caught:", e);
-      console.error("🛠 Stack Trace:", e.stack);
-    }
+      // Add the captured output to the terminal
+      addLinesToTerminal(outputBuffer);
+
+      // Re-initialize Termynal to animate the new lines
+      termynal = new Termynal(termContainer);
+    });
+  },
+  printErr: function (text) {
+    // Optional: Handle errors differently, e.g., print to browser console
+    console.error("WASM Error:", text);
+    // You could also add it to the terminal with a specific error color
+    outputBuffer += `\x1b[0;31m${text}\x1b[0m\n`;
   },
 };

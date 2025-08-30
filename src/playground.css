@@ -1,222 +1,150 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-.header {
-    background: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-.controls {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-}
-.container {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-}
-.editor {
-    flex: 1;
-    padding: 10px;
-    border-right: 1px solid #ddd;
-    background: #282c34;
-    font-size: 14px;
-    height: 100%;
-    color: white;
-}
-.output {
-    width: 50%;
-    color: green;
-    padding: 10px;
-    overflow: auto;
-    border-left: 1px solid #ddd;
-    position: relative;
-}
-.run-btn {
-    padding: 10px;
-    background: blue;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Code Editor</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
-    <style>
-        body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-.header {
-    background: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-}
-.controls {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-}
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-.editor,
-.output {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background: #282c34;
-    color: white;
-}
-.output {
-    background: black;
-    color: green;
-    overflow: auto;
-}
-.run-btn {
-    padding: 10px;
-    background: blue;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-@media (min-width: 768px) {
-    .container {
-        flex-direction: row;
-    }
-    .editor {
-        width: 50%;
-        height: 100vh;
-    }
-    .output {
-        width: 50%;
-        height: 100vh;
-    }
-}
-@media (max-width: 767px) {
-    .container {
-        flex-direction: column;
-    }
-    .editor {
-        height: 60vh;
-        width: 100%;
-    }
-    .output {
-        height: 40vh;
-        width: 100%;
-    }
-}
-
+/* === GLOBAL STYLES & COLOR THEME === */
 :root {
-    --color-bg: #252a33;
-    --color-text: #eee;
-    --color-text-subtle: #a2a2a2;
+    --bg-dark: #1e1e26;
+    --bg-medium: #282a36;
+    --bg-light: #44475a;
+    --border-color: #44475a;
+    --primary-text: #f8f8f2;
+    --secondary-text: #bd93f9;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --font-sans:
+        "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+    --font-mono:
+        "Fira Code", "JetBrains Mono", Consolas, Monaco, "Andale Mono",
+        "Ubuntu Mono", monospace;
 }
 
-[data-termynal] {
-    width: 750px;
-    max-width: 100%;
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-size: 18px;
-    font-family: "Fira Mono", Consolas, Menlo, Monaco, "Courier New", Courier,
-        monospace;
-    border-radius: 4px;
-    padding: 75px 45px 35px;
-    position: relative;
-    -webkit-box-sizing: border-box;
+* {
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--bg-dark);
+    color: var(--primary-text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scrollbars */
+}
+
+/* === HEADER & CONTROLS === */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-medium);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.run-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(
+        90deg,
+        var(--accent-purple),
+        var(--accent-pink)
+    );
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.run-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* === MAIN LAYOUT (EDITOR & OUTPUT) === */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    height: 100%;
+    overflow: hidden;
+}
+
+.editor-pane {
+    height: 100%;
+    overflow: hidden;
+    position: relative; /* Needed for CodeMirror */
+}
+
+.output-pane {
+    height: 100%;
+    overflow-y: auto; /* Allow terminal to scroll if content overflows */
+    background-color: var(--bg-dark);
+    border-left: 1px solid var(--border-color);
+}
+
+/* === CODEMIRROR STYLING === */
+.CodeMirror {
+    height: 100% !important; /* Override default height */
+    font-family: var(--font-mono);
+    font-size: 16px;
+}
+
+/* Style for the Dracula theme scrollbar and background */
+.cm-s-dracula.CodeMirror {
+    background: var(--bg-medium);
+}
+.cm-s-dracula .CodeMirror-gutters {
+    background: var(--bg-medium);
+    border-right: 1px solid var(--border-color);
+}
+
+/* === TERMINAL (TERMYNAL) STYLING === */
+[data-termynal] {
+    width: 100%;
+    background: var(--bg-dark);
+    color: var(--primary-text);
+    font-size: 16px;
+    font-family: var(--font-mono);
+    border-radius: 0;
+    padding: 20px;
+    position: relative;
+    min-height: 100%;
+}
+
+/* Remove default Termynal window buttons */
 [data-termynal]:before {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    /* A little hack to display the window buttons in one pseudo element. */
-    background: #d9515d;
-    -webkit-box-shadow:
-        25px 0 0 #f4c025,
-        50px 0 0 #3ec930;
-    box-shadow:
-        25px 0 0 #f4c025,
-        50px 0 0 #3ec930;
+    content: none;
 }
 
 [data-ty] {
     display: block;
-    line-height: 2;
+    line-height: 1.8;
 }
 
-[data-ty]:before {
-    /* Set up defaults and ensure empty lines are displayed. */
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-}
-
-[data-ty="input"]:before,
-[data-ty-prompt]:before {
-    margin-right: 0.75em;
-    color: var(--color-text-subtle);
-}
-
-[data-ty="input"]:before {
-    content: "$";
-}
-
-[data-ty][data-ty-prompt]:before {
-    content: attr(data-ty-prompt);
-}
-
-[data-ty-cursor]:after {
-    content: attr(data-ty-cursor);
-    font-family: monospace;
-    margin-left: 0.5em;
-    -webkit-animation: blink 1s infinite;
-    animation: blink 1s infinite;
-}
-
-/* Cursor animation */
-
-@-webkit-keyframes blink {
-    50% {
-        opacity: 0;
+/* === RESPONSIVE DESIGN FOR MOBILE === */
+@media (max-width: 800px) {
+    .container {
+        grid-template-columns: 1fr; /* Single column */
+        grid-template-rows: 60vh 40vh; /* Editor gets more space */
     }
-}
 
-@keyframes blink {
-    50% {
-        opacity: 0;
+    .output-pane {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
     }
 }
