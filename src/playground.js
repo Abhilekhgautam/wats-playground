@@ -54,12 +54,9 @@ function addLinesToTerminal(text) {
 
     const lineElement = document.createElement("pre");
     lineElement.setAttribute("data-ty", "");
-    lineElement.setAttribute("class", "language-json");
     const codeElement = document.createElement("code");
-    codeElement.setAttribute("class", "language-json");
 
     codeElement.innerHTML = code;
-    code = Prism.highlightElement(codeElement);
     lineElement.appendChild(codeElement);
     termContainer.appendChild(lineElement);
   } catch (e) {
