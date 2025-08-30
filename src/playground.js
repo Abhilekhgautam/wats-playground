@@ -89,7 +89,7 @@ Module = {
       Module._free(bufferPointer);
 
       // Add the captured output to the terminal
-      addLinesToTerminal(outputBuffer);
+      captureOutput(outputBuffer);
 
       // Re-initialize Termynal to animate the new lines
       termynal = new Termynal(termContainer);
