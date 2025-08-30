@@ -48,12 +48,23 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
-  const lineElement = document.createElement("pre");
-  lineElement.setAttribute("data-ty", "");
-  let json_val = JSON.parse(text);
-  lineElement.innerHTML = ansiToHtml(JSON.stringify(json_val, null, 4));
-  Prism.highlightElement(lineElement);
-  termContainer.appendChild(lineElement);
+  try {
+    let json_val = JSON.parse(text);
+    let code = ansiToHtml(JSON.stringify(json_val, null, 4));
+
+    const lineElement = document.createElement("pre");
+    lineElement.setAttribute("data-ty", "");
+    lineElement.setAttribute("class", "language-json");
+    const codeElement = document.createElement("code");
+    codeElement.innerHTML = code;
+    code = Prism.highlightElement(codeElement);
+    lineElement.appendChild(codeElement);
+    termContainer.appendChild(lineElement);
+  } catch (e) {
+    const lineElement = document.createElement("span");
+    lineElement.innerHTML = text;
+    termContainer.appendChild(lineElement);
+  }
 }
 
 // --- 3. WASM MODULE INTERACTION ---
