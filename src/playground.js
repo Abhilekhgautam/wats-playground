@@ -48,6 +48,7 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
+  console.log(text);
   clearTerminal();
   if (text.startsWith("[")) {
     const lineElement = document.createElement("span");
