@@ -48,21 +48,27 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
-  try {
-    let json_val = JSON.parse(text);
-    let code = ansiToHtml(JSON.stringify(json_val, null, 4));
-
-    const lineElement = document.createElement("pre");
-    lineElement.setAttribute("data-ty", "");
-    const codeElement = document.createElement("code");
-
-    codeElement.innerHTML = code;
-    lineElement.appendChild(codeElement);
-    termContainer.appendChild(lineElement);
-  } catch (e) {
+  if (text.startsWith("[")) {
     const lineElement = document.createElement("span");
     lineElement.innerHTML = ansiToHtml(text);
     termContainer.appendChild(lineElement);
+  } else {
+    try {
+      let json_val = JSON.parse(text);
+      let code = ansiToHtml(JSON.stringify(json_val, null, 4));
+
+      const lineElement = document.createElement("pre");
+      lineElement.setAttribute("data-ty", "");
+      const codeElement = document.createElement("code");
+
+      codeElement.innerHTML = code;
+      lineElement.appendChild(codeElement);
+      termContainer.appendChild(lineElement);
+    } catch (e) {
+      const lineElement = document.createElement("span");
+      lineElement.innerHTML = ansiToHtml(text);
+      termContainer.appendChild(lineElement);
+    }
   }
 }
 
