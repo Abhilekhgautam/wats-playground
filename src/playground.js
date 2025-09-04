@@ -1,6 +1,4 @@
-// --- 1. CODEMIRROR INITIALIZATION ---
 const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
-  // KEY CHANGE: Use the Dracula theme for a stylish look
   theme: "dracula",
   lineNumbers: true,
   autoCloseBrackets: true,
@@ -15,24 +13,14 @@ const term = document.getElementById("termynal");
 let termynal;
 
 function ansiToHtml(text) {
-  const ansiRegex = /\x1b\[(\d+;?)*m/g;
-  const colorMap = {
-    "0;31": "red",
-    "0;32": "lightgreen",
-    "0;34": "lightblue",
-    "1;33": "yellow",
-  };
-
-  let html = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
   return text
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\x1b\[0;31m/g, '<span style="color: #ff5555;">') // Red for errors
-    .replace(/\x1b\[0;32m/g, '<span style="color: #50fa7b;">') // Green
-    .replace(/\x1b\[0;34m/g, '<span style="color: #8be9fd;">') // Blue for hints
-    .replace(/\x1b\[0m/g, "</span>") // Reset to default
-    .replace(/\n/g, "<br>"); // Handle newlines
+    .replace(/</g, "&lt;") // Replace < with &lt;
+    .replace(/>/g, "&gt;") // Replace > with &gt;
+    .replace(/\x1b\[0;31m/g, '<span style="color: red;">') // Red for errors
+    .replace(/\x1b\[0;32m/g, '<span style="color: green;">') // Green
+    .replace(/\x1b\[0;34m/g, '<span style="color: blue;">') // Blue for hints
+    .replace(/\x1b\[0m/g, "</span>") // Reset to default (close the span)
+    .replace(/\x1b\n/g, "<br>"); // Handle newlines
 }
 
 function clearTerminal() {
@@ -104,7 +92,7 @@ Module = {
       addLinesToTerminal(outputBuffer);
 
       // Re-initialize Termynal to animate the new lines
-      termynal = new Termynal(termContainer);
+      termynal = new Termynal("#terminal");
 
       Module._free(bufferPointer);
     });
