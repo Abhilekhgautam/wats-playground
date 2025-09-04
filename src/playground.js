@@ -68,7 +68,7 @@ Module = {
       addLinesToTerminal(outputBuffer);
 
       // Re-initialize Termynal to animate the new lines
-      termynal = new Termynal("#terminal");
+      termynal = new Termynal("#termynal");
 
       Module._free(bufferPointer);
     });
