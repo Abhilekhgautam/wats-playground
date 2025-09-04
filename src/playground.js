@@ -20,7 +20,6 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
 const termContainer = document.getElementById("termynal");
 let termynal = new Termynal(termContainer);
 
-// This function converts ANSI color codes from your WASM output to HTML spans
 function ansiToHtml(text) {
   const ansiRegex = /\x1b\[(\d+;?)*m/g;
   const colorMap = {
@@ -28,7 +27,6 @@ function ansiToHtml(text) {
     "0;32": "lightgreen",
     "0;34": "lightblue",
     "1;33": "yellow",
-    // Add more color codes as needed
   };
 
   let html = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -48,30 +46,33 @@ function clearTerminal() {
 }
 
 function addLinesToTerminal(text) {
-  console.log(text);
   clearTerminal();
-  if (text.startsWith("[")) {
-    const lineElement = document.createElement("span");
-    lineElement.innerHTML = ansiToHtml(text);
-    termContainer.appendChild(lineElement);
-  } else {
-    try {
-      let json_val = JSON.parse(text);
-      let code = ansiToHtml(JSON.stringify(json_val, null, 4));
+  const lineElement = document.createElement("span");
+  lineElement.setAttribute("data-ty", "");
+  lineElement.innerHTML = ansiToHtml(text);
+  termContainer.appendChild(lineElement);
+  // if (text.startsWith("[")) {
+  //   const lineElement = document.createElement("span");
+  //   lineElement.innerHTML = ansiToHtml(text);
+  //   termContainer.appendChild(lineElement);
+  // } else {
+  //   try {
+  //     let json_val = JSON.parse(text);
+  //     let code = ansiToHtml(JSON.stringify(json_val, null, 4));
 
-      const lineElement = document.createElement("pre");
-      lineElement.setAttribute("data-ty", "");
-      const codeElement = document.createElement("code");
+  //     const lineElement = document.createElement("pre");
+  //     lineElement.setAttribute("data-ty", "");
+  //     const codeElement = document.createElement("code");
 
-      codeElement.innerHTML = code;
-      lineElement.appendChild(codeElement);
-      termContainer.appendChild(lineElement);
-    } catch (e) {
-      const lineElement = document.createElement("span");
-      lineElement.innerHTML = ansiToHtml(text);
-      termContainer.appendChild(lineElement);
-    }
-  }
+  //     codeElement.innerHTML = code;
+  //     lineElement.appendChild(codeElement);
+  //     termContainer.appendChild(lineElement);
+  //   } catch (e) {
+  //     const lineElement = document.createElement("span");
+  //     lineElement.innerHTML = ansiToHtml(text);
+  //     termContainer.appendChild(lineElement);
+  //   }
+  // }
 }
 
 // --- 3. WASM MODULE INTERACTION ---
