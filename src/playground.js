@@ -6,19 +6,13 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
   autoCloseBrackets: true,
 
   value: `function main() {
-    let x = 5;
-
-    let y: i64 = 67;
-
-    loop {
-        # Uhh this is a comment.
-    }
+    let x = 5
 }`,
 });
 
 // --- 2. TERMINAL HANDLING LOGIC ---
-const termContainer = document.getElementById("termynal");
-let termynal = new Termynal(termContainer);
+const term = document.getElementById("termynal");
+let termynal;
 
 function ansiToHtml(text) {
   const ansiRegex = /\x1b\[(\d+;?)*m/g;
@@ -42,15 +36,18 @@ function ansiToHtml(text) {
 }
 
 function clearTerminal() {
-  termContainer.innerHTML = "";
+  term.innerHTML = "";
+  term.innerText = "";
+  outputBuffer = "";
+  termynal = new Termynal("#termynal");
 }
 
 function addLinesToTerminal(text) {
-  clearTerminal();
-  const lineElement = document.createElement("span");
-  lineElement.setAttribute("data-ty", "");
-  lineElement.innerHTML = ansiToHtml(text);
-  termContainer.appendChild(lineElement);
+  let span = document.createElement("span");
+  span.setAttribute("data-ty", "");
+  span.style.color = color;
+  span.innerHTML = ansiToHtml(text);
+  term.appendChild(span);
   // if (text.startsWith("[")) {
   //   const lineElement = document.createElement("span");
   //   lineElement.innerHTML = ansiToHtml(text);
@@ -77,6 +74,7 @@ function addLinesToTerminal(text) {
 
 // --- 3. WASM MODULE INTERACTION ---
 let outputBuffer = "";
+
 function captureOutput(text) {
   outputBuffer += text + "\n";
 }
@@ -107,6 +105,8 @@ Module = {
 
       // Re-initialize Termynal to animate the new lines
       termynal = new Termynal(termContainer);
+
+      Module._free(bufferPointer);
     });
   },
   printErr: function (text) {
