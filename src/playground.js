@@ -42,7 +42,7 @@ function clearTerminal() {
   termynal = new Termynal("#termynal");
 }
 
-function addLinesToTerminal(text) {
+function addLinesToTerminal(text, color = "white") {
   let span = document.createElement("span");
   span.setAttribute("data-ty", "");
   span.style.color = color;
