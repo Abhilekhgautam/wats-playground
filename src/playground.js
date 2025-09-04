@@ -23,6 +23,8 @@ function ansiToHtml(text) {
     .replace(/\x1b\n/g, "<br>"); // Handle newlines
 }
 
+let outputBuffer = "";
+
 function clearTerminal() {
   term.innerHTML = "";
   term.innerText = "";
@@ -38,7 +40,6 @@ function addLinesToTerminal(text, color = "white") {
   term.appendChild(span);
 }
 
-let outputBuffer = "";
 termynal = new Termynal("#termynal");
 
 function captureOutput(text) {
