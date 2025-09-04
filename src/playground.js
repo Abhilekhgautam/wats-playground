@@ -78,7 +78,7 @@ function addLinesToTerminal(text) {
 // --- 3. WASM MODULE INTERACTION ---
 let outputBuffer = "";
 function captureOutput(text) {
-  outputBuffer += text;
+  outputBuffer += text + "\n";
 }
 
 Module = {
