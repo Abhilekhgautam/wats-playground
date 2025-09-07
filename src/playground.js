@@ -3,14 +3,25 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
   lineNumbers: true,
   autoCloseBrackets: true,
 
-  value: `function main() {
-    let x = 5
-}`,
+  value: `function factorial(num){
+    let result = 1;
+    let count  = 1;
+
+    loop{
+      result = result * count;
+      count  = count + 1;
+
+      if count > num{
+        break;
+      }
+    }
+  }`,
 });
 
-// --- 2. TERMINAL HANDLING LOGIC ---
 const term = document.getElementById("termynal");
 let termynal;
+
+let toggle_format = document.getElementById("format-toggle");
 
 function ansiToHtml(text) {
   return text
@@ -36,7 +47,11 @@ function addLinesToTerminal(text, color = "white") {
   let span = document.createElement("span");
   span.setAttribute("data-ty", "");
   span.style.color = color;
-  span.innerHTML = ansiToHtml(text);
+  if (!text.startsWith("{") || toggle_format.checked) {
+    span.innerHTML = ansiToHtml(text);
+  } else {
+    span.innerHTML = text;
+  }
   term.appendChild(span);
 }
 
@@ -58,12 +73,20 @@ Module = {
 
       let inputValue = codeMirrorEditor.getValue();
 
-      // Allocate memory, run code, and free memory
       const bufferSize = inputValue.length + 1;
       const bufferPointer = Module._malloc(bufferSize);
       Module.stringToUTF8(inputValue, bufferPointer, bufferSize);
 
       Module._compile_program(bufferPointer);
+
+      if (!toggle_format.checked) {
+        try {
+          let str = JSON.parse(outputBuffer);
+          outputBuffer = bril2txt(str);
+          addLinesToTerminal(outputBuffer);
+          return;
+        } catch (error) {}
+      }
 
       // Add the captured output to the terminal
       addLinesToTerminal(outputBuffer);

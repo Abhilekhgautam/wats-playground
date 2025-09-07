@@ -1,4 +1,4 @@
-/* === GLOBAL STYLES & COLOR THEME === */
+/*/* === GLOBAL STYLES & COLOR THEME === */
 :root {
     --bg-dark: #1e1e26;
     --bg-medium: #282a36;
@@ -74,6 +74,290 @@ body {
 .run-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* === MAIN LAYOUT (EDITOR & OUTPUT) === */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    height: 100%;
+    overflow: hidden;
+}
+
+.editor-pane {
+    height: 100%;
+    overflow: hidden;
+    position: relative; /* Needed for CodeMirror */
+}
+
+.output-pane {
+    height: 100%;
+    overflow-y: auto; /* Allow terminal to scroll if content overflows */
+    background-color: var(--bg-dark);
+    border-left: 1px solid var(--border-color);
+}
+
+/* === CODEMIRROR STYLING === */
+.CodeMirror {
+    height: 100% !important; /* Override default height */
+    font-family: var(--font-mono);
+    font-size: 16px;
+}
+
+/* Style for the Dracula theme scrollbar and background */
+.cm-s-dracula.CodeMirror {
+    background: var(--bg-medium);
+}
+.cm-s-dracula .CodeMirror-gutters {
+    background: var(--bg-medium);
+    border-right: 1px solid var(--border-color);
+}
+
+/* === TERMINAL (TERMYNAL) STYLING === */
+[data-termynal] {
+    width: 100%;
+    background: var(--bg-dark);
+    color: var(--primary-text);
+    font-size: 16px;
+    font-family: var(--font-mono);
+    border-radius: 0;
+    padding: 20px;
+    position: relative;
+    min-height: 100%;
+}
+
+/* Remove default Termynal window buttons */
+[data-termynal]:before {
+    content: none;
+}
+
+[data-ty] {
+    display: block;
+    line-height: 1.8;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.toggle-label {
+    margin: 0 0.5rem;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* === RESPONSIVE DESIGN FOR MOBILE === */
+@media (max-width: 800px) {
+    .container {
+        grid-template-columns: 1fr; /* Single column */
+        grid-template-rows: 60vh 40vh; /* Editor gets more space */
+    }
+
+    .output-pane {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+}
+*/
+
+/* === GLOBAL STYLES & COLOR THEME === */
+:root {
+    --bg-dark: #1e1e26;
+    --bg-medium: #282a36;
+    --bg-light: #44475a;
+    --border-color: #44475a;
+    --primary-text: #f8f8f2;
+    --secondary-text: #bd93f9;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --font-sans:
+        "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+    --font-mono:
+        "Fira Code", "JetBrains Mono", Consolas, Monaco, "Andale Mono",
+        "Ubuntu Mono", monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--bg-dark);
+    color: var(--primary-text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scrollbars */
+}
+
+/* === HEADER & CONTROLS === */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-medium);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Creates nice spacing between the toggle and the button */
+}
+
+.run-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(
+        90deg,
+        var(--accent-purple),
+        var(--accent-pink)
+    );
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.run-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* === TOGGLE SWITCH STYLES === */
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-label {
+    margin: 0 0.5rem;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--secondary-text);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-light); /* Themed background */
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--primary-text); /* Themed toggle circle */
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-purple); /* Themed "on" state */
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
 
 /* === MAIN LAYOUT (EDITOR & OUTPUT) === */

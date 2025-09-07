@@ -35,9 +35,17 @@
         <header class="header">
             <div class="logo">Wats Playground</div>
             <div class="controls">
+                <div class="toggle-container">
+                    <span class="toggle-label">Bril Text</span>
+                    <label class="switch">
+                        <input type="checkbox" checked id="format-toggle" />
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label">Bril JSON</span>
+                </div>
                 <button id="run-btn" class="run-btn">
                     <svg
-                        xmlns="http://www.w.org/2000/svg"
+                        xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                         width="18"
@@ -64,8 +72,8 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+        <script src="briljson2txt.js"></script>
         <script src="playground.js"></script>
-
         <script src="../wasm/app.js"></script>
     </body>
 </html>
