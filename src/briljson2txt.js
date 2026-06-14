@@ -1,6 +1,6 @@
 function args_to_strings(args) {
   if (args) {
-    return `(${args.map((arg) => `${arg.name}: ${type_to_str(arg.type)}`).join(", ")})`;
+    return `${args.map((arg) => `${arg.name}: ${type_to_str(arg.type)}`).join(", ")}`;
   } else return "";
 }
 
@@ -25,7 +25,7 @@ function instr_to_string(instr) {
     return `  ${instr["dest"]}${type} = ${instr["op"]} ${val}\n`;
   }
   else {
-    let rhs = instr["op"];
+    let rhs = "  " + instr["op"];
     if ("funcs" in instr) {
       for (const item of instr["funcs"]) {
         rhs += ` ${item}`;
@@ -40,7 +40,6 @@ function instr_to_string(instr) {
       for (const item of instr["labels"]) {
         rhs += ` .${item}`;
       }
-      rhs += "\n";
     }
     if ("dest" in instr) {
       let type;
@@ -68,7 +67,7 @@ function get_instr(instr) {
 function get_func(func) {
   let fn_type = func.type ? func.type : "void";
   let string = `
-@${func.name}${args_to_strings(func["args"])}{\n`;
+@${func.name}(${args_to_strings(func["args"])}) : ${fn_type}{\n`;
 
   for (const label_or_instructions of func["instrs"]) {
     if ("label" in label_or_instructions) {
