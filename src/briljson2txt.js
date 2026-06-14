@@ -21,7 +21,6 @@ function instr_to_string(instr) {
       type = "";
     }
     let val = value_to_str(instr["value"]);
-    console.log(`${instr["value"]} , ${val}`)
     return `  ${instr["dest"]}${type} = ${instr["op"]} ${val}\n`;
   }
   else {
