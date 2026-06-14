@@ -3,16 +3,15 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
   lineNumbers: true,
   autoCloseBrackets: true,
 
-  value: `function factorial(num){
+  value: `function factorial(num: i32) -> i32{
     let result = 1;
-    let count  = 1;
 
     loop{
-      result = result * count;
-      count  = count + 1;
+      result = result * num;
+      num = num - 1;
 
-      if count > num{
-        break;
+      if num <= 1{
+        return result;
       }
     }
   }`,
