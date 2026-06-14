@@ -25,7 +25,7 @@ function instr_to_string(instr) {
     return `  ${instr["dest"]}${type} = ${instr["op"]} ${val}\n`;
   }
   else {
-    let rhs = "  " + instr["op"];
+    let rhs = instr["op"];
     if ("funcs" in instr) {
       for (const item of instr["funcs"]) {
         rhs += ` ${item}`;
