@@ -5,16 +5,13 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
 
   value: `function factorial(num: i32) -> i32{
     let result = 1;
-
-    loop{
-      result = result * num;
-      num = num - 1;
-
-      if num <= 1{
-        return result;
-      }
+    
+    for i in 2 to num {
+       result = result * i;
     }
-  }`,
+
+    return result;
+}`,
 });
 
 const term = document.getElementById("termynal");
