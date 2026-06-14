@@ -21,7 +21,7 @@ function instr_to_string(instr) {
       type = "";
     }
     let val = value_to_str(instr["value"]);
-    return `  ${instr["dest"]}${type} = ${instr["op"]} ${val}\n`;
+    return `  ${instr["dest"]}${type} = ${instr["op"]} ${val};\n`;
   }
   else {
     let rhs = "  " + instr["op"];
@@ -48,9 +48,9 @@ function instr_to_string(instr) {
         type = "";
       }
 
-      return `  ${instr["dest"]}${type} = ${rhs}\n`;
+      return `  ${instr["dest"]}${type} = ${rhs};\n`;
     } else {
-      return `${rhs}\n`;
+      return `${rhs};\n`;
     }
   }
 }
