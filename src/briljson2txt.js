@@ -13,7 +13,7 @@ function value_to_str(value) {
 }
 
 function instr_to_string(instr) {
-  if (instr["op"] == "const") {
+  if (instr["op"] == "const" || instr["op"] == "id") {
     let type;
     if ("type" in instr) {
       type = ": " + type_to_str(instr["type"]);
@@ -21,8 +21,10 @@ function instr_to_string(instr) {
       type = "";
     }
     let val = value_to_str(instr["value"]);
-    return `  ${instr["dest"]}${type} = const ${val}\n`;
-  } else {
+    console.log(`${instr["value"]} , ${val}`)
+    return `  ${instr["dest"]}${type} = ${instr["op"]} ${val}\n`;
+  }
+  else {
     let rhs = "  " + instr["op"];
     if ("funcs" in instr) {
       for (const item of instr["funcs"]) {
@@ -50,13 +52,13 @@ function instr_to_string(instr) {
 
       return `  ${instr["dest"]}${type} = ${rhs}\n`;
     } else {
-      return rhs;
+      return `${rhs}\n`;
     }
   }
 }
 
 function get_label(label) {
-  return `.${label["label"]}\n`;
+  return `.${label["label"]}:\n`;
 }
 
 function get_instr(instr) {
