@@ -1,318 +1,120 @@
-/*/* === GLOBAL STYLES & COLOR THEME === */
-:root {
-    --bg-dark: #1e1e26;
-    --bg-medium: #282a36;
-    --bg-light: #44475a;
-    --border-color: #44475a;
-    --primary-text: #f8f8f2;
-    --secondary-text: #bd93f9;
-    --accent-purple: #8b5cf6;
-    --accent-pink: #ec4899;
-    --font-sans:
-        "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif;
-    --font-mono:
-        "Fira Code", "JetBrains Mono", Consolas, Monaco, "Andale Mono",
-        "Ubuntu Mono", monospace;
-}
-
+/* =========================================
+   RESET & VARIABLES
+========================================= */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-main: #09090b;       /* Zinc 950 - Deepest black/gray */
+    --bg-panel: #18181b;      /* Zinc 900 - Slightly lighter */
+    --border-color: #27272a;  /* Zinc 800 */
+    --text-main: #e4e4e7;     /* Zinc 200 */
+    --text-muted: #a1a1aa;    /* Zinc 400 */
+    --accent: #fafafa;        /* Pure white */
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: var(--font-sans);
-    background-color: var(--bg-dark);
-    color: var(--primary-text);
-    height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    
+    /* 100dvh accounts for mobile browser address bars */
+    height: 100vh; 
+    height: 100dvh; 
+    
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent body scrollbars */
+    overflow: hidden;
 }
 
-/* === HEADER & CONTROLS === */
+/* =========================================
+   HEADER & LOGO
+========================================= */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--bg-medium);
+    height: 56px;
+    padding: 0 24px;
+    background-color: var(--bg-main);
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .logo {
-    font-size: 1.25rem;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.logo-accent {
+    color: var(--accent);
     font-weight: 600;
 }
 
-.run-btn {
+/* =========================================
+   COMPILER OPTIONS (Godbolt Style)
+========================================= */
+.compiler-opts {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(
-        90deg,
-        var(--accent-purple),
-        var(--accent-pink)
-    );
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.6rem 1.2rem;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    flex: 1;
+    max-width: 500px;
+    margin: 0 24px;
 }
 
-.run-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-/* === MAIN LAYOUT (EDITOR & OUTPUT) === */
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    height: 100%;
-    overflow: hidden;
-}
-
-.editor-pane {
-    height: 100%;
-    overflow: hidden;
-    position: relative; /* Needed for CodeMirror */
-}
-
-.output-pane {
-    height: 100%;
-    overflow-y: auto; /* Allow terminal to scroll if content overflows */
-    background-color: var(--bg-dark);
-    border-left: 1px solid var(--border-color);
-}
-
-/* === CODEMIRROR STYLING === */
-.CodeMirror {
-    height: 100% !important; /* Override default height */
-    font-family: var(--font-mono);
-    font-size: 16px;
-}
-
-/* Style for the Dracula theme scrollbar and background */
-.cm-s-dracula.CodeMirror {
-    background: var(--bg-medium);
-}
-.cm-s-dracula .CodeMirror-gutters {
-    background: var(--bg-medium);
-    border-right: 1px solid var(--border-color);
-}
-
-/* === TERMINAL (TERMYNAL) STYLING === */
-[data-termynal] {
+#compiler-options {
     width: 100%;
-    background: var(--bg-dark);
-    color: var(--primary-text);
-    font-size: 16px;
-    font-family: var(--font-mono);
-    border-radius: 0;
-    padding: 20px;
-    position: relative;
-    min-height: 100%;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: 1px solid #3f3f46;
+    border-radius: 3px;
+    padding: 6px 12px;
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: 13px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-/* Remove default Termynal window buttons */
-[data-termynal]:before {
-    content: none;
+#compiler-options::placeholder {
+    color: #71717a;
+    font-style: italic;
 }
 
-[data-ty] {
-    display: block;
-    line-height: 1.8;
+#compiler-options:focus {
+    outline: none;
+    border-color: #007acc; /* VS Code / Godbolt blue focus ring */
+    background-color: #18181b;
 }
 
-.toggle-container {
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-}
-
-.toggle-label {
-    margin: 0 0.5rem;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: #2196f3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px);
-}
-
-.slider.round {
-    border-radius: 20px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-/* === RESPONSIVE DESIGN FOR MOBILE === */
-@media (max-width: 800px) {
-    .container {
-        grid-template-columns: 1fr; /* Single column */
-        grid-template-rows: 60vh 40vh; /* Editor gets more space */
-    }
-
-    .output-pane {
-        border-left: none;
-        border-top: 1px solid var(--border-color);
-    }
-}
-*/
-
-/* === GLOBAL STYLES & COLOR THEME === */
-:root {
-    --bg-dark: #1e1e26;
-    --bg-medium: #282a36;
-    --bg-light: #44475a;
-    --border-color: #44475a;
-    --primary-text: #f8f8f2;
-    --secondary-text: #bd93f9;
-    --accent-purple: #8b5cf6;
-    --accent-pink: #ec4899;
-    --font-sans:
-        "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif;
-    --font-mono:
-        "Fira Code", "JetBrains Mono", Consolas, Monaco, "Andale Mono",
-        "Ubuntu Mono", monospace;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: var(--font-sans);
-    background-color: var(--bg-dark);
-    color: var(--primary-text);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Prevent body scrollbars */
-}
-
-/* === HEADER & CONTROLS === */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--bg-medium);
-    border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0; /* Prevent header from shrinking */
-}
-
-.logo {
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
+/* =========================================
+   CONTROLS (Toggle & Button)
+========================================= */
 .controls {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Creates nice spacing between the toggle and the button */
+    gap: 24px;
 }
 
-.run-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(
-        90deg,
-        var(--accent-purple),
-        var(--accent-pink)
-    );
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.6rem 1.2rem;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.run-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-/* === TOGGLE SWITCH STYLES === */
+/* Toggle Switch */
 .toggle-container {
     display: flex;
     align-items: center;
-}
-
-.toggle-label {
-    margin: 0 0.5rem;
-    font-size: 0.9em;
+    gap: 12px;
+    font-size: 13px;
     font-weight: 500;
-    color: var(--secondary-text);
+    color: var(--text-muted);
+    white-space: nowrap;
 }
 
 .switch {
     position: relative;
     display: inline-block;
-    width: 40px;
+    width: 36px;
     height: 20px;
+    flex-shrink: 0;
 }
 
 .switch input {
@@ -324,12 +126,10 @@ body {
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--bg-light); /* Themed background */
-    transition: 0.4s;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 20px;
 }
 
 .slider:before {
@@ -339,96 +139,186 @@ body {
     width: 14px;
     left: 3px;
     bottom: 3px;
-    background-color: var(--primary-text); /* Themed toggle circle */
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: var(--accent-purple); /* Themed "on" state */
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 20px;
-}
-
-.slider.round:before {
+    background-color: var(--text-muted);
+    transition: .3s;
     border-radius: 50%;
 }
 
-/* === MAIN LAYOUT (EDITOR & OUTPUT) === */
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(16px);
+    background-color: var(--bg-main);
+}
+
+/* Run Button */
+.run-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--accent);
+    color: var(--bg-main);
+    border: none;
+    padding: 0 16px;
+    height: 34px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    flex-shrink: 0;
+}
+
+.run-btn:hover {
+    background-color: #d4d4d8;
+}
+
+.run-btn:active {
+    transform: scale(0.97);
+}
+
+/* =========================================
+   MAIN SPLIT LAYOUT (Editor & Terminal)
+========================================= */
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    height: 100%;
-    overflow: hidden;
+    display: flex;
+    flex: 1;
+    width: 100%;
+    min-height: 0; /* Important to prevent flex child overflow */
 }
 
 .editor-pane {
+    flex: 1;
+    border-right: 1px solid var(--border-color);
     height: 100%;
-    overflow: hidden;
-    position: relative; /* Needed for CodeMirror */
+    background-color: #282a36; /* Blends with CodeMirror Dracula theme */
+    min-height: 0; 
+}
+
+/* Overriding CodeMirror to stretch perfectly */
+.CodeMirror {
+    height: 100% !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .output-pane {
+    flex: 1;
+    background-color: var(--bg-main);
+    padding: 24px;
     height: 100%;
-    overflow-y: auto; /* Allow terminal to scroll if content overflows */
-    background-color: var(--bg-dark);
-    border-left: 1px solid var(--border-color);
+    overflow-y: auto;
+    min-height: 0; 
 }
 
-/* === CODEMIRROR STYLING === */
-.CodeMirror {
-    height: 100% !important; /* Override default height */
-    font-family: var(--font-mono);
-    font-size: 16px;
+/* Custom minimal scrollbar for output pane */
+.output-pane::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.output-pane::-webkit-scrollbar-track {
+    background: transparent;
+}
+.output-pane::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+    border-radius: 4px;
+}
+.output-pane::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
 }
 
-/* Style for the Dracula theme scrollbar and background */
-.cm-s-dracula.CodeMirror {
-    background: var(--bg-medium);
-}
-.cm-s-dracula .CodeMirror-gutters {
-    background: var(--bg-medium);
-    border-right: 1px solid var(--border-color);
-}
-
-/* === TERMINAL (TERMYNAL) STYLING === */
-[data-termynal] {
+/* =========================================
+   TERMYNAL OVERRIDES (Kill the box completely)
+========================================= */
+#termynal, [data-termynal] {
+    /* Absolute transparent background so it merges with the pane */
+    background: transparent !important;
+    background-color: transparent !important;
+    
+    /* Kill all bounding boxes, borders, and rounded corners */
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    
+    /* Remove native padding/margins since `.output-pane` handles spacing */
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    /* Text styling */
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-size: 13px !important;
     width: 100%;
-    background: var(--bg-dark);
-    color: var(--primary-text);
-    font-size: 16px;
-    font-family: var(--font-mono);
-    border-radius: 0;
-    padding: 20px;
-    position: relative;
+    max-width: 100%;
     min-height: 100%;
+    
+    /* Ensure long strings wrap properly instead of expanding horizontally */
+    white-space: pre-wrap !important;
+    word-break: break-all;
 }
 
-/* Remove default Termynal window buttons */
-[data-termynal]:before {
-    content: none;
+/* Kills the Mac OS top-bar dots */
+#termynal:before, [data-termynal]:before {
+    content: none !important;
+    display: none !important;
 }
 
-[data-ty] {
-    display: block;
-    line-height: 1.8;
+/* Optional: Hides the flashing block cursor at the end if you don't want it */
+[data-termynal]:after, .termynal-cursor {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
 }
 
-/* === RESPONSIVE DESIGN FOR MOBILE === */
-@media (max-width: 800px) {
+/* =========================================
+   MOBILE RESPONSIVENESS (< 768px)
+========================================= */
+@media (max-width: 768px) {
+    /* Stack the Header vertically */
+    .header {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .logo {
+        order: 1;
+        text-align: center;
+    }
+
+    .compiler-opts {
+        order: 2;
+        margin: 0;
+        max-width: 100%;
+    }
+
+    .controls {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    /* Split Editor (top) and Output (bottom) */
     .container {
-        grid-template-columns: 1fr; /* Single column */
-        grid-template-rows: 60vh 40vh; /* Editor gets more space */
+        flex-direction: column;
+    }
+
+    .editor-pane {
+        flex: 1 1 50%;
+        height: 50%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .output-pane {
-        border-left: none;
-        border-top: 1px solid var(--border-color);
+        flex: 1 1 50%;
+        height: 50%;
+        padding: 16px;
     }
 }
