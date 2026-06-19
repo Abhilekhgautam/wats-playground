@@ -20,7 +20,15 @@ function instr_to_string(instr) {
     } else {
       type = "";
     }
-    let val = value_to_str(instr["value"]);
+    let val;
+    if (instr["value"]) {
+       val = value_to_str(instr["value"]);
+    }
+    else {
+       for (const item of instr["args"]){
+         val = `${item}`;   
+       }
+    }
     return `  ${instr["dest"]}${type} = ${instr["op"]} ${val};\n`;
   }
   else {
