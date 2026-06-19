@@ -4548,7 +4548,7 @@ var wasmTable = makeInvalidEarlyAccess("wasmTable");
 
 function assignWasmExports(wasmExports) {
   assert(typeof wasmExports["compile_program"] != "undefined", "missing Wasm export: compile_program");
-  _compile_program = Module["_compile_program"] = createExportWrapper("compile_program", 1);
+  _compile_program = Module["_compile_program"] = createExportWrapper("compile_program", 2);
   assert(typeof wasmExports["__main_argc_argv"] != "undefined", "missing Wasm export: __main_argc_argv");
   _main = createExportWrapper("__main_argc_argv", 2);
   assert(typeof wasmExports["__funcs_on_exit"] != "undefined", "missing Wasm export: __funcs_on_exit");
