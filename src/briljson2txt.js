@@ -21,7 +21,7 @@ function instr_to_string(instr) {
       type = "";
     }
     let val;
-    if (instr["value"]) {
+    if ("value" in instr) {
        val = value_to_str(instr["value"]);
     }
     else {
