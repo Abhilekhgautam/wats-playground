@@ -35,7 +35,7 @@ function instr_to_string(instr) {
     let rhs = "  " + instr["op"];
     if ("funcs" in instr) {
       for (const item of instr["funcs"]) {
-        rhs += ` ${item}`;
+        rhs += ` @${item}`;
       }
     }
     if ("args" in instr) {
