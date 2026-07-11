@@ -2,14 +2,14 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
   theme: "dracula",
   lineNumbers: true,
   autoCloseBrackets: true,
-  // keyboard shortcuts 
+  // keyboard shortcuts
   extraKeys: {
     "Cmd-Enter": runWasmCompiler,
-    "Ctrl-Enter": runWasmCompiler
+    "Ctrl-Enter": runWasmCompiler,
   },
   value: `function factorial(num: i32) -> i32{
     let result = 1;
-    
+
     for i in 2 to num {
        result = result * i;
     }
@@ -20,7 +20,7 @@ const codeMirrorEditor = CodeMirror(document.getElementById("editor"), {
 
 const term = document.getElementById("termynal");
 const toggle_format = document.getElementById("format-toggle");
-const compiler_options_input = document.getElementById("compiler-options"); 
+const compiler_options_input = document.getElementById("compiler-options");
 let termynal;
 let outputBuffer = "";
 
@@ -41,20 +41,20 @@ function clearTerminal() {
 }
 
 function renderTerminal(text, color = "white") {
-  term.innerHTML = ""; 
-  
+  term.innerHTML = "";
+
   let span = document.createElement("span");
   span.setAttribute("data-ty", "");
   span.style.color = color;
-  
+
   if (!text.startsWith("{") || toggle_format.checked) {
     span.innerHTML = ansiToHtml(text);
   } else {
-    span.innerHTML = text; 
+    span.innerHTML = text;
   }
-  
+
   term.appendChild(span);
-  
+
   // Re-initialize animation cleanly
   termynal = new Termynal("#termynal");
 }
@@ -85,7 +85,7 @@ function runWasmCompiler() {
   Module.stringToUTF8(optionsValue, optionsPointer, optionsSize);
 
   try {
-    Module._compile_program(bufferPointer, optionsPointer); 
+    Module._compile_program(bufferPointer, optionsPointer);
   } catch (err) {
     console.error("Execution failed:", err);
     outputBuffer += `\x1b[0;31mRuntime Error: ${err}\x1b[0m\n`;
@@ -96,7 +96,10 @@ function runWasmCompiler() {
       let str = JSON.parse(outputBuffer);
       outputBuffer = bril2txt(str);
     } catch (error) {
-      console.error("Bril JSON Parse/Convert failed. Falling back to raw text.", error);
+      console.error(
+        "Bril JSON Parse/Convert failed. Falling back to raw text.",
+        error,
+      );
     }
   }
 
@@ -114,9 +117,11 @@ var Module = {
   },
   onRuntimeInitialized: function () {
     console.log("WASM Runtime Initialized.");
-    
+
     termynal = new Termynal("#termynal");
 
-    document.getElementById("run-btn").addEventListener("click", runWasmCompiler);
-  }
+    document
+      .getElementById("run-btn")
+      .addEventListener("click", runWasmCompiler);
+  },
 };
